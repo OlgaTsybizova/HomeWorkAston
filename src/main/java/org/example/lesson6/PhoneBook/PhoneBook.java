@@ -1,30 +1,33 @@
 package org.example.lesson6.PhoneBook;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class PhoneBook {
-    private String name;
-    private String phoneNumber;
-    public PhoneBook(String name, String phoneNumber){
-        this.name = name;
-        this.phoneNumber = phoneNumber;
+    private Map <String, String> phoneBook = new HashMap<String, String>();
+
+    //Добавляем новый контакт
+    public void add(String phoneNumber , String name){
+        phoneBook.put(phoneNumber,name);
     }
 
-    public String getName() {
-        return name;
+    //Печатаем весь справочник
+    public void printPhoneBook(){
+        for(Map.Entry<String, String> s : phoneBook.entrySet()){
+            System.out.println("Номер телефона: " + s.getKey()+ " Фамиллия: "+ s.getValue());
+        }
     }
-    public String getPhoneNumber() {
-        return phoneNumber;
+    //Поиск по фамиилии
+    public void get(String name){
+        for(Map.Entry<String, String> s : phoneBook.entrySet()){
+            if(s.getValue().equals(name)) {
+                System.out.println("Номер телефона: " + s.getKey() + " Фамиллия: " + s.getValue());
+            }
+        }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PhoneBook phoneBook = (PhoneBook) o;
-        return Objects.equals(name, phoneBook.name) && Objects.equals(phoneNumber, phoneBook.phoneNumber);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, phoneNumber);
+    public Map<String, String> getPhoneBook() {
+        return phoneBook;
     }
 }

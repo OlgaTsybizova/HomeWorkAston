@@ -1,7 +1,7 @@
 package org.example.lesson6.Student;
 
 public class MarksException extends Exception  {
-    private String info;
+    public String info;
     MarksException (String info){
         this.info = info;
     }
