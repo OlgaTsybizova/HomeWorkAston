@@ -7,6 +7,8 @@ import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -19,17 +21,33 @@ public class MainTest {
     public void testGETRequest() {
         given()
                 .spec(requestSpec)
-                .queryParam("foo1", "bar1")
-                .queryParam("foo2", "bar2")
+                .queryParam("name1", "Ivanov")
+                .queryParam("name2", "Petrov")
                 .when()
                 .get("get")
                 .then().log().body().statusCode(HttpStatus.SC_OK)
-                .contentType("application/json").body("args.foo1", equalTo("bar1"));
+                .contentType("application/json")
+                .body("args.name1", equalTo("Ivanov"))
+                .and().body("args.name2", equalTo("Petrov"));
+    }
+
+    @Test
+    public void testGETRequestNegative() {
+        given()
+                .spec(requestSpec)
+                .queryParam("name1", "Ivanov")
+                .queryParam("name2", "Petrov")
+                .when()
+                .get("post")
+                .then().log().body().statusCode(HttpStatus.SC_OK)
+                .contentType("application/json")
+                .body("args.name1", equalTo("Ivanov"))
+                .and().body("args.name2", equalTo("Petrov"));
     }
 
     @Test
     public void testPOSTRowText() {
-        String requestBody = "{\"test\": \"value\"}";
+        String requestBody = "{\"name\": \"Ivanov\", \"phoneNum\": \"123-123\"}";
 
         given()
                 .spec(requestSpec)
@@ -37,7 +55,7 @@ public class MainTest {
                 .when()
                 .post("post")
                 .then().log().body().statusCode(HttpStatus.SC_OK)
-                .and().body("data", equalTo("{\"test\": \"value\"}"));
+                .and().body("data", equalTo("{\"name\": \"Ivanov\", \"phoneNum\": \"123-123\"}"));
 
     }
 
@@ -46,19 +64,19 @@ public class MainTest {
         given()
                 .spec(requestSpec)
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("foo1", "bar1")
-                .formParam("foo2", "bar2")
+                .formParam("name1", "Ivanov")
+                .formParam("name2", "Petrov")
                 .when()
                 .post("post")
                 .then().log().body().statusCode(HttpStatus.SC_OK)
-                .and().body("form.foo1", equalTo("bar1"))
-                .and().body("form.foo2", equalTo("bar2"));
+                .and().body("form.name1", equalTo("Ivanov"))
+                .and().body("form.name2", equalTo("Petrov"));
         ;
     }
 
     @Test
     public void testPUTRequest() {
-        String requestBody = "This is expected to be sent back as part of response body.";
+        String requestBody = "{\"name\": \"Petrov\", \"phoneNum\": \"567-567\"}";
         given()
                 .spec(requestSpec)
                 .contentType("text/plain")
@@ -66,12 +84,12 @@ public class MainTest {
                 .when()
                 .put("put")
                 .then().log().body().statusCode(HttpStatus.SC_OK)
-                .and().body("data", equalTo("This is expected to be sent back as part of response body."));
+                .and().body("data", equalTo("{\"name\": \"Petrov\", \"phoneNum\": \"567-567\"}"));
     }
 
     @Test
     public void testPATCHRequest() {
-        String requestBody = "This is expected to be sent back as part of response body.";
+        String requestBody = "{\"name\": \"Sidorov\", \"phoneNum\": \"567-567\"}";
         given()
                 .spec(requestSpec)
                 .contentType("text/plain")
@@ -79,15 +97,12 @@ public class MainTest {
                 .when()
                 .patch("patch")
                 .then().log().body().statusCode(HttpStatus.SC_OK)
-                .and().body("data", equalTo("This is expected to be sent back as part of response body."));
-        ;
-
-
+                .and().body("data", equalTo("{\"name\": \"Sidorov\", \"phoneNum\": \"567-567\"}"));
     }
 
     @Test
     public void testDELETERequest() {
-        String requestBody = "This is expected to be sent back as part of response body.";
+        String requestBody = "{\"name\": \"Sidorov\", \"phoneNum\": \"567-567\"}";
         given()
                 .spec(requestSpec)
                 .contentType("text/plain")
@@ -95,7 +110,7 @@ public class MainTest {
                 .when()
                 .delete("delete")
                 .then().log().body().statusCode(HttpStatus.SC_OK)
-                .and().body("data", equalTo("This is expected to be sent back as part of response body."));
+                .and().body("data", equalTo("{\"name\": \"Sidorov\", \"phoneNum\": \"567-567\"}"));
 
     }
 
