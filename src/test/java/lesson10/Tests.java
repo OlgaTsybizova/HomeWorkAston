@@ -25,7 +25,7 @@ public class Tests {
     PayFormPage payFormPage;
 
     @BeforeAll
-    public static void setupChromeDriver(){
+    public static void setupChromeDriver() {
         WebDriverManager.chromedriver().setup();
     }
    /* public static void setupFireFoxDriver(){
@@ -33,7 +33,7 @@ public class Tests {
     }*/
 
     @BeforeEach
-    public void createObjectChromeDriver(){
+    public void createObjectChromeDriver() {
         driver = new ChromeDriver();
         //driver = new FirefoxDriver();
         driver.get("https://www.mts.by/");
@@ -41,32 +41,35 @@ public class Tests {
         payFormPage = new PayFormPage(driver);
         payFormPage.clickCookieButton();
     }
+
     @AfterEach
-    void quitSession(){
+    void quitSession() {
         driver.quit();
     }
-/*
+
     @Test
-    void testCheckBlockName(){
+    void testCheckBlockName() {
         payFormPage.mouseMoveToElement(payFormPage.getPayFormName());
         String actual = payFormPage.getPayFormName().getText();
         System.out.println(actual);
         String expected = "Онлайн пополнение\nбез комиссии";
         Assert.assertEquals(actual, expected);
     }
+
     @Test
-    void testCheckLogoElements(){
+    void testCheckLogoElements() {
         //Set<WebElement> listLogoPaySystem = payFormPage.getPaySystemLogo();
         List<String> actualListPaySystem = new ArrayList<String>();
-        List<String> expectedListPaySystem = new ArrayList<>(Arrays.asList("Visa", "Verified By Visa","MasterCard","MasterCard Secure Code", "Белкарт"));
-        for(WebElement l: payFormPage.getPaySystemLogo()){
+        List<String> expectedListPaySystem = new ArrayList<>(Arrays.asList("Visa", "Verified By Visa", "MasterCard", "MasterCard Secure Code", "Белкарт"));
+        for (WebElement l : payFormPage.getPaySystemLogo()) {
             //System.out.println(l.getAttribute("alt"));
             payFormPage.mouseMoveToElement(l);
-            actualListPaySystem.add(l.getAttribute( "alt"));
+            actualListPaySystem.add(l.getAttribute("alt"));
             Assert.assertTrue(l.isDisplayed());
         }
         Assert.assertEquals(actualListPaySystem, expectedListPaySystem);
     }
+
     @Test
     void testCheckLinkAboutService() {
         String hrefValue = payFormPage.getLinkAboutServise().getAttribute("href");
@@ -77,37 +80,41 @@ public class Tests {
             Assert.assertEquals(actualTitle, expectedTitle);
         }
     }
-    @Test
-    void testCheckPlaceHoldersForDifType1(){
-        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Услуги связи')]"));
-        List<String> expectedPlaceholders =  List.of("Номер телефона","Сумма","E-mail для отправки чека");
-        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
-        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
-    }
-    @Test
-    void testCheckPlaceHoldersForType2(){
-        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Домашний интернет')]"));
-        List<String> expectedPlaceholders =  List.of("Номер абонента","Сумма","E-mail для отправки чека");
-        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
-        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
-    }
-    @Test
-    void testCheckPlaceHoldersForType3(){
-        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Рассрочка')]"));
-        List<String> expectedPlaceholders =  List.of("Номер счета на 44","Сумма","E-mail для отправки чека");
-        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
-        Assert.assertEquals(actualPlaceholders,expectedPlaceholders);
-    }
-    @Test
-    void testCheckPlaceHoldersForType4(){
-        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Задолженность')]"));
-        List<String> expectedPlaceholders = List.of("Номер счета на 2073","Сумма","E-mail для отправки чека");
-        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
-        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
-    }*/
 
     @Test
-    void testCheckPaymentForTypePay1(){
+    void testCheckPlaceHoldersForDifType1() {
+        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Услуги связи')]"));
+        List<String> expectedPlaceholders = List.of("Номер телефона", "Сумма", "E-mail для отправки чека");
+        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
+        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
+    }
+
+    @Test
+    void testCheckPlaceHoldersForType2() {
+        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Домашний интернет')]"));
+        List<String> expectedPlaceholders = List.of("Номер абонента", "Сумма", "E-mail для отправки чека");
+        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
+        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
+    }
+
+    @Test
+    void testCheckPlaceHoldersForType3() {
+        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Рассрочка')]"));
+        List<String> expectedPlaceholders = List.of("Номер счета на 44", "Сумма", "E-mail для отправки чека");
+        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
+        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
+    }
+
+    @Test
+    void testCheckPlaceHoldersForType4() {
+        WebElement value = driver.findElement(By.xpath("//p[contains(text(),'Задолженность')]"));
+        List<String> expectedPlaceholders = List.of("Номер счета на 2073", "Сумма", "E-mail для отправки чека");
+        List<String> actualPlaceholders = payFormPage.getPlaceHoldersForTypePay(value);
+        Assert.assertEquals(actualPlaceholders, expectedPlaceholders);
+    }
+
+    @Test
+    void testCheckPaymentForTypePay1() {
         String expVisaURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/visa-system.svg";
         String expMastercardURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/mastercard-system.svg";
         String expBelcardURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/belkart-system.svg";
@@ -122,8 +129,8 @@ public class Tests {
 
 
         String phoneNumber = "297777777";
-        String [] code = (payFormPage.getInfoPhoneCode().getText()).split("\\+");
-        String expectedPhoneNumber = code[1]+phoneNumber;
+        String[] code = (payFormPage.getInfoPhoneCode().getText()).split("\\+");
+        String expectedPhoneNumber = code[1] + phoneNumber;
         String expectedSum = "100.00";
         String expectedMail = "mail@gmail.com";
         payFormPage.enterPhoneNumber(phoneNumber);
@@ -154,7 +161,7 @@ public class Tests {
         wait1.until(ExpectedConditions.visibilityOf(paymentPage.getInfoSumField()));
 
         String text = paymentPage.getInfoSumField().getText();
-        String [] items = text.split(" ");
+        String[] items = text.split(" ");
 
         String actualSum = items[0];
         System.out.println(actualSum);
@@ -167,7 +174,7 @@ public class Tests {
         Assert.assertEquals(actualPhoneNumber, expectedPhoneNumber);
 
         List<String> actualLogoPaySystem = new ArrayList<>();
-        for (WebElement element: paymentPage.getPaySystemLogoModal()){
+        for (WebElement element : paymentPage.getPaySystemLogoModal()) {
             actualLogoPaySystem.add(element.getAttribute("src"));
             //System.out.println(element.getAttribute("src"));
         }
